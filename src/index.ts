@@ -3,23 +3,14 @@ import multer from 'multer';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-import { JsonResponse } from './util/jsonResponse';
 import { Messages } from './util/messages';
 dotenv.config();
 
 const port = process.env.PORT || 3005;
 console.log(new Date().toISOString());
 const app: Express = express();
-app.use(cors);
+app.use(cors());
 app.use(express.json());
-// Add a list of allowed origins.
-// If you have more origins you would like to add, you can add them to the array below.
-const allowedOrigins = ['*.'];
-
-const options: cors.CorsOptions = {
-  origin: allowedOrigins,
-};
-
 //config multer for file upload
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -50,12 +41,6 @@ app.post(
       };
 
       await s3Client.send(new PutObjectCommand(uploadParams));
-
-      console.log('file completed');
-      const response = JsonResponse.httpResponse(200, {
-        message: true,
-        body: 'file transferred',
-      });
 
       res.status(200).json({
         message: true,
