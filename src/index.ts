@@ -1,6 +1,7 @@
 import express, { Express, Request, Response } from 'express';
 import multer from 'multer';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { JsonResponse } from './util/jsonResponse';
 dotenv.config();
@@ -8,6 +9,8 @@ dotenv.config();
 const port = process.env.PORT || 3005;
 console.log(new Date().toISOString());
 const app: Express = express();
+app.use(cors);
+app.use(express.json());
 
 //config multer for file upload
 const upload = multer({
