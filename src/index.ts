@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { JsonResponse } from './util/jsonResponse';
+import { Messages } from './util/messages';
 dotenv.config();
 
 const port = process.env.PORT || 3005;
@@ -56,7 +57,10 @@ app.post(
         body: 'file transferred',
       });
 
-      res.send(response);
+      res.status(200).json({
+        message: true,
+        body: Messages.FILE_TRANSFER_SUCCESS,
+      });
     } catch (err: any) {
       res.status(501).send(err.message).end();
       return;
