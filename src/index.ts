@@ -11,6 +11,13 @@ console.log(new Date().toISOString());
 const app: Express = express();
 app.use(cors);
 app.use(express.json());
+// Add a list of allowed origins.
+// If you have more origins you would like to add, you can add them to the array below.
+const allowedOrigins = ['*.'];
+
+const options: cors.CorsOptions = {
+  origin: allowedOrigins,
+};
 
 //config multer for file upload
 const upload = multer({
