@@ -49,7 +49,7 @@ app.post(
         body: 'file transferred',
       });
 
-      res.send(JsonResponse.to_Json(response));
+      res.send(response);
     } catch (err: any) {
       res.status(501).send(err.message).end();
       return;
