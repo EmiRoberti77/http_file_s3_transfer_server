@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import multer from 'multer';
 import dotenv from 'dotenv';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { JsonResponse } from './util/jsonResponse';
 dotenv.config();
 
 const port = process.env.PORT || 3005;
@@ -40,7 +41,12 @@ app.post(
       await s3Client.send(new PutObjectCommand(uploadParams));
 
       console.log('file completed');
-      res.status(200).send('all good');
+      const response = JsonResponse.httpResponse(200, {
+        message: true,
+        body: 'file transferred',
+      });
+
+      res.send(JsonResponse.to_Json(response));
     } catch (err: any) {
       res.status(501).send(err.message).end();
       return;
