@@ -4,9 +4,12 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { Messages } from './util/messages';
+
 dotenv.config();
 
+const defaultBucket = 'emibucketai';
 const port = process.env.PORT || 3005;
+const bucket_name = process.env.BUCKET_NAME || defaultBucket;
 console.log(new Date().toISOString());
 const app: Express = express();
 app.use(cors());
@@ -35,7 +38,7 @@ app.post(
       const file = req.file;
 
       const uploadParams = {
-        Bucket: 'emibucketai',
+        Bucket: bucket_name,
         Key: file.originalname,
         Body: file.buffer,
       };
